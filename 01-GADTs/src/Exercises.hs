@@ -311,4 +311,3 @@ data TypeAlignedList a b where
 
 composeTALs :: TypeAlignedList b c -> TypeAlignedList a b -> TypeAlignedList a c
 composeTALs = error "Implement me, and then celebrate!"
-

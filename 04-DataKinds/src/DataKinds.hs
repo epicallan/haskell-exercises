@@ -8,9 +8,10 @@
 GADTs in particular, but there are plenty more cases to follow! -}
 
 ---
+import Prelude hiding (head, zip)
 
 import Data.Kind (Constraint, Type)
-import Prelude hiding (zip)
+
 
 {-
   Now we know about flexible instances, kind signatures, and GADTs, we have a
@@ -89,7 +90,7 @@ data Vector (length :: Natural) (a :: Type) where
 -}
 
 head :: Vector ('Successor n) a -> a
-head (VCons head _) = head
+head (VCons headx _) = headx
 
 {-
   'head' is a /total/ function. We don't have to match on the 'VNil' case

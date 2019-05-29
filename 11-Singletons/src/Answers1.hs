@@ -1,4 +1,6 @@
-module Exercises where
+module Answers1 where
+
+import Prelude hiding (head)
 
 import Data.Kind (Type)
 -- import Data.Function ((&))
@@ -18,7 +20,22 @@ data IntegerMonoid = Sum | Product
 -- | a. Write a newtype around 'Integer' that lets us choose which instance we
 -- want.
 
+newtype FancyInteger (a :: IntegerMonoid) = FancyInteger Integer
+  deriving (Num, Eq, Ord)
+
 -- | b. Write the two monoid instances for 'Integer'.
+
+instance Semigroup (FancyInteger 'Sum) where
+  x <> y = x + y
+
+instance Semigroup (FancyInteger 'Product) where
+  x <> y = x * y
+
+instance Monoid (FancyInteger 'Sum) where
+  mempty = 0
+
+instance Monoid (FancyInteger 'Product) where
+  mempty = 1
 
 -- | c. Why do we need @FlexibleInstances@ to do this?
 
@@ -36,11 +53,14 @@ data Void -- No constructors!
 -- | a. If we promote this with DataKinds, can we produce any /types/ of kind
 -- 'Void'?
 
+-- No
+
 -- | b. What are the possible type-level values of kind 'Maybe Void'?
+
+-- 'Nothing & 'Just
 
 -- | c. Considering 'Maybe Void', and similar examples of kinds such as
 -- 'Either Void Bool', why do you think 'Void' might be a useful kind?
-
 
 
 
@@ -53,15 +73,43 @@ data Void -- No constructors!
 
 data Nat = Z | S Nat
 
+newtype CountableString (c :: Nat ) = CountableString String deriving (Show, Eq)
+
+newtype CountableInt (c :: Nat) = CountableInt Int deriving (Show, Eq)
+
+class Countable x where
+  count :: x -> Int
+
+instance Countable (CountableString c) where
+  count (CountableString x) = length x
+
+instance Countable (CountableInt c) where
+  count (CountableInt _) = 1
+
+infixr 5 :++
+infixr 7 ::>
+
+type family (:++) (y :: Nat) (x :: Nat) :: Nat where
+  (:++) y 'Z = y
+  (:++) 'Z x = x
+  (:++) ('S y) ('S x)= 'S ('S (y :++ x))
+
 data StringAndIntList (stringCount :: Nat) where
-  -- ...
+  SEmpty :: StringAndIntList 'Z
+  ( ::> ) :: Int -> CountableString c -> StringAndIntList ('S c)
 
 -- | b. Update it to keep track of the count of strings /and/ integers.
 
+infixr 7 :+>
+
+data StringAndIntList' (stringCount :: Nat) where
+  SEmpty' :: StringAndIntList' 'Z
+  ( :+> ) :: CountableInt x -> CountableString y -> StringAndIntList' (x :++ y)
+
+
 -- | c. What would be the type of the 'head' function?
-
-
-
+head :: StringAndIntList' ('S x) -> Int
+head (cx :+> cy) = count cx + count cy
 
 
 {- FOUR -}
@@ -167,8 +215,8 @@ data SNat (value :: Nat) where
 
 -- | b. Write a function that extracts a vector's length at the type level:
 
-length :: Vector n a -> SNat n
-length = error "Implement me!"
+length_ :: Vector n a -> SNat n
+length_ = error "Implement me!"
 
 -- | c. Is 'Proxy' a singleton type?
 

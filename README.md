@@ -68,3 +68,5 @@ repl command:
 $ ghcid -c "stack repl"
 $ ghcid -c "cabal new-repl"
 ```
+
+check Exercise branch for answers

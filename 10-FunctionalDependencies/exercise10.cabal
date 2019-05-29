@@ -7,6 +7,7 @@ library
   default-language: Haskell2010
   build-depends:    base
   hs-source-dirs:   src
+  ghc-options:  -Wall -Werror -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat -Widentities -Wredundant-constraints -fhide-source-paths -Wpartial-fields
+  default-extensions: LambdaCase DeriveGeneric FlexibleInstances FlexibleContexts ScopedTypeVariables TypeApplications MultiParamTypeClasses RecordWildCards TypeApplications TypeFamilies GADTs PolyKinds DataKinds RankNTypes TemplateHaskell TypeOperators UndecidableInstances KindSignatures
   exposed-modules:  FunctionalDependencies
                   , Exercises
-

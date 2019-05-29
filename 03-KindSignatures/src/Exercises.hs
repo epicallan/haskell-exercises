@@ -2,14 +2,9 @@
 {-# LANGUAGE KindSignatures    #-}
 module Exercises where
 
-import Data.Kind (Constraint, Type)
-
 -- | Fix the following classes by annotating them with kind signatures. GHC
 -- will tell you exactly what the problem is, so be sure to try /before/
 -- uncommenting!
-
-
-
 
 
 {- ONE -}

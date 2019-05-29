@@ -1,4 +1,4 @@
-module Exercises where
+module Exercises1 where
 
 import Data.Kind (Type)
 -- import Data.Function ((&))
