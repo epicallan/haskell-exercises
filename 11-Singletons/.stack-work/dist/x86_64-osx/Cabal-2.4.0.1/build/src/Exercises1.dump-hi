@@ -1,0 +1,276 @@
+
+==================== FINAL INTERFACE ====================
+2019-05-29 18:14:33.776692 UTC
+
+interface exercise11-0.1.0.0-An4uNzvgz24Aavpi9F3b5w:Exercises1 8065
+  interface hash: 2367aafdd90d4902053b7c86fbd9ac53
+  ABI hash: 36d88028d22ae99d46a347e83829c58f
+  export-list hash: 8bd8124db2824221c48e77fd3bb5b785
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: 2788ca7aa16512bf6f2fc7e3b5fc28d0
+  opt_hash: d0a78e7b344f95c7406be35c9b75e196
+  hpc_hash: 93b885adfe0da089cdf634904fd59f71
+  plugin_hash: ad164012d6b1e14942349d58b1132007
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  Exercises1.!!
+  Exercises1.interpret
+  Exercises1.length
+  Exercises1.myApp
+  Exercises1.BlogAction{Exercises1.AddBlog Exercises1.AddComment Exercises1.DeleteBlog Exercises1.DeleteComment}
+  Exercises1.HList
+  Exercises1.IntegerMonoid{Exercises1.Product Exercises1.Sum}
+  Exercises1.List{Exercises1.Cons Exercises1.Nil}
+  Exercises1.MaybeShowable
+  Exercises1.Nat{Exercises1.S Exercises1.Z}
+  Exercises1.Program{Exercises1.CloseFile Exercises1.Exit Exercises1.OpenFile Exercises1.ReadFile Exercises1.WriteFile}
+  Exercises1.Proxy{Exercises1.Proxy}
+  Exercises1.SBool{Exercises1.SFalse Exercises1.STrue}
+  Exercises1.SNat
+  Exercises1.Showable{Exercises1.Showable}
+  Exercises1.SmallerThan
+  Exercises1.StringAndIntList
+  Exercises1.Vector{Exercises1.VCons Exercises1.VNil}
+  Exercises1.Void
+module dependencies:
+package dependencies: array-0.5.3.0 base-4.12.0.0 binary-0.8.6.0
+                      bytestring-0.10.8.2 containers-0.6.0.1 deepseq-1.4.4.0
+                      ghc-boot-th-8.6.5 ghc-prim-0.5.3 integer-gmp-1.0.2.0 mtl-2.2.2
+                      pretty-1.1.3.6 primitive-0.6.4.0 safe-0.3.17 singletons-2.5.1
+                      syb-0.7 template-haskell-2.14.0.0 text-1.2.3.1
+                      th-abstraction-0.2.11.0 th-desugar-1.9 th-expand-syns-0.4.4.0
+                      th-lift-0.7.11 th-lift-instances-0.1.12 th-orphans-0.13.7
+                      th-reify-many-0.1.9 transformers-0.5.6.2 vector-0.12.0.3
+orphans: singletons-2.5.1:Data.Singletons
+         singletons-2.5.1:Data.Singletons.Prelude.Semigroup
+         singletons-2.5.1:Data.Singletons.Prelude.Const
+         singletons-2.5.1:Data.Singletons.Prelude.Functor
+         singletons-2.5.1:Data.Singletons.Prelude.Identity
+         singletons-2.5.1:Data.Singletons.Prelude.Monoid
+         singletons-2.5.1:Data.Singletons.Prelude.Semigroup.Internal
+         singletons-2.5.1:Data.Singletons.TypeLits
+         singletons-2.5.1:Data.Singletons.ShowSing
+         singletons-2.5.1:Data.Singletons.TypeLits.Internal
+         singletons-2.5.1:Data.Singletons.Prelude.Ord
+         singletons-2.5.1:Data.Singletons.Prelude.Instances
+         singletons-2.5.1:Data.Singletons.Decide
+         th-orphans-0.13.7:Language.Haskell.TH.Instances
+         th-lift-0.7.11:Language.Haskell.TH.Lift
+         th-lift-instances-0.1.12:Instances.TH.Lift
+         text-1.2.3.1:Data.Text.Lazy vector-0.12.0.3:Data.Vector.Unboxed
+         vector-0.12.0.3:Data.Vector.Fusion.Bundle
+         transformers-0.5.6.2:Control.Monad.Trans.Error
+         syb-0.7:Data.Generics.Instances text-1.2.3.1:Data.Text
+         binary-0.8.6.0:Data.Binary.Generic
+         bytestring-0.10.8.2:Data.ByteString.Builder
+         text-1.2.3.1:Data.Text.Show base-4.12.0.0:GHC.Float
+         base-4.12.0.0:GHC.Base
+family instance modules: base-4.12.0.0:Control.Applicative
+                         base-4.12.0.0:Data.Complex base-4.12.0.0:Data.Functor.Compose
+                         base-4.12.0.0:Data.Functor.Const
+                         base-4.12.0.0:Data.Functor.Identity
+                         base-4.12.0.0:Data.Functor.Product base-4.12.0.0:Data.Functor.Sum
+                         base-4.12.0.0:Data.Monoid base-4.12.0.0:Data.Semigroup
+                         base-4.12.0.0:Data.Semigroup.Internal base-4.12.0.0:Data.Version
+                         base-4.12.0.0:Data.Void base-4.12.0.0:GHC.Exts
+                         base-4.12.0.0:GHC.Generics base-4.12.0.0:GHC.IO.Exception
+                         containers-0.6.0.1:Data.Graph
+                         containers-0.6.0.1:Data.IntMap.Internal
+                         containers-0.6.0.1:Data.IntSet.Internal
+                         containers-0.6.0.1:Data.Map.Internal
+                         containers-0.6.0.1:Data.Sequence.Internal
+                         containers-0.6.0.1:Data.Set.Internal containers-0.6.0.1:Data.Tree
+                         ghc-boot-th-8.6.5:GHC.ForeignSrcLang.Type
+                         ghc-boot-th-8.6.5:GHC.LanguageExtensions.Type
+                         pretty-1.1.3.6:Text.PrettyPrint.Annotated.HughesPJ
+                         pretty-1.1.3.6:Text.PrettyPrint.HughesPJ
+                         primitive-0.6.4.0:Control.Monad.Primitive
+                         primitive-0.6.4.0:Data.Primitive.Array
+                         primitive-0.6.4.0:Data.Primitive.ByteArray
+                         primitive-0.6.4.0:Data.Primitive.PrimArray
+                         primitive-0.6.4.0:Data.Primitive.SmallArray
+                         primitive-0.6.4.0:Data.Primitive.UnliftedArray
+                         singletons-2.5.1:Data.Singletons
+                         singletons-2.5.1:Data.Singletons.Internal
+                         singletons-2.5.1:Data.Singletons.Prelude.Base
+                         singletons-2.5.1:Data.Singletons.Prelude.Bool
+                         singletons-2.5.1:Data.Singletons.Prelude.Const
+                         singletons-2.5.1:Data.Singletons.Prelude.Either
+                         singletons-2.5.1:Data.Singletons.Prelude.Enum
+                         singletons-2.5.1:Data.Singletons.Prelude.Eq
+                         singletons-2.5.1:Data.Singletons.Prelude.Foldable
+                         singletons-2.5.1:Data.Singletons.Prelude.Functor
+                         singletons-2.5.1:Data.Singletons.Prelude.Identity
+                         singletons-2.5.1:Data.Singletons.Prelude.Instances
+                         singletons-2.5.1:Data.Singletons.Prelude.IsString
+                         singletons-2.5.1:Data.Singletons.Prelude.List.Internal
+                         singletons-2.5.1:Data.Singletons.Prelude.List.Internal.Disambiguation
+                         singletons-2.5.1:Data.Singletons.Prelude.Maybe
+                         singletons-2.5.1:Data.Singletons.Prelude.Monad.Internal
+                         singletons-2.5.1:Data.Singletons.Prelude.Monoid
+                         singletons-2.5.1:Data.Singletons.Prelude.Num
+                         singletons-2.5.1:Data.Singletons.Prelude.Ord
+                         singletons-2.5.1:Data.Singletons.Prelude.Semigroup
+                         singletons-2.5.1:Data.Singletons.Prelude.Semigroup.Internal
+                         singletons-2.5.1:Data.Singletons.Prelude.Show
+                         singletons-2.5.1:Data.Singletons.Prelude.Traversable
+                         singletons-2.5.1:Data.Singletons.Prelude.Tuple
+                         singletons-2.5.1:Data.Singletons.Syntax
+                         singletons-2.5.1:Data.Singletons.TypeLits
+                         singletons-2.5.1:Data.Singletons.TypeLits.Internal
+                         template-haskell-2.14.0.0:Language.Haskell.TH.Syntax
+                         text-1.2.3.1:Data.Text text-1.2.3.1:Data.Text.Lazy
+                         th-abstraction-0.2.11.0:Language.Haskell.TH.Datatype
+                         th-desugar-1.9:Language.Haskell.TH.Desugar.AST
+                         vector-0.12.0.3:Data.Vector vector-0.12.0.3:Data.Vector.Primitive
+                         vector-0.12.0.3:Data.Vector.Storable
+                         vector-0.12.0.3:Data.Vector.Unboxed
+                         vector-0.12.0.3:Data.Vector.Unboxed.Base
+import  -/  base-4.12.0.0:Data.Kind 00b38651ebf0240c5dfe0fbba2e4e7c5
+import  -/  base-4.12.0.0:GHC.Base c00b75f0b052d05c55ba6a4dd1c63b26
+import  -/  base-4.12.0.0:GHC.Err ea5e313ef4146b40b5d8b27aa168e736
+import  -/  base-4.12.0.0:GHC.Show 838a5d039379d82d9626aae53dfce276
+import  -/  base-4.12.0.0:Prelude 3c779dfd6448bdd8e234c336802c2acb
+import  -/  ghc-prim-0.5.3:GHC.Classes 0f6fd7d7db53fc48f6e1f01803cc6c9d
+import  -/  ghc-prim-0.5.3:GHC.Types 57064c9f957b09bc2e360061ad5cae0b
+import  -/  singletons-2.5.1:Data.Singletons 9bcb09330726ef5011a79ec6f45b7121
+602f06b6097bd6eeda8388f68cd22925
+  (!!) :: Exercises1.Vector n a -> Exercises1.SmallerThan n -> a
+8858aacc96dc315edfebd7cb771aa873
+  $tc'AddBlog :: GHC.Types.TyCon
+259a2d8488440285d790e13cfa55e647
+  $tc'AddComment :: GHC.Types.TyCon
+4acc39c9a48ebdf5613854c7d398a1c8
+  $tc'CloseFile :: GHC.Types.TyCon
+940f80a8bde5858e941edf0f19936e9a
+  $tc'Cons :: GHC.Types.TyCon
+fe9e69aff7eb12d911f472d618688d62
+  $tc'DeleteBlog :: GHC.Types.TyCon
+07053f93cf80320679bb5a19683a0946
+  $tc'DeleteComment :: GHC.Types.TyCon
+bff2d70c44b4eff9682c96ec91560686
+  $tc'Exit :: GHC.Types.TyCon
+62e5f51a77f4bd72b21457228be74503
+  $tc'Nil :: GHC.Types.TyCon
+90c13f21e4d3f3f2fd27295f17ebe863
+  $tc'OpenFile :: GHC.Types.TyCon
+230c79ea5ba1bfdb242976cc62a6a791
+  $tc'Product :: GHC.Types.TyCon
+4b2019243e825d9be87adb8b7f52a647
+  $tc'Proxy :: GHC.Types.TyCon
+b5e97fc7e6e50bdf4362796e8deea2f2
+  $tc'ReadFile :: GHC.Types.TyCon
+e4616b886565f262935882f9372a7e6b
+  $tc'S :: GHC.Types.TyCon
+9ab2c3e3b597ae7c22a6c863b8337808
+  $tc'SFalse :: GHC.Types.TyCon
+419071b957c3f33b917ec5d69b74ced6
+  $tc'STrue :: GHC.Types.TyCon
+6897a935879a5a8529895a1a8b49de48
+  $tc'Showable :: GHC.Types.TyCon
+2cf090723dd5d019ab55fdf17dddd2b9
+  $tc'Sum :: GHC.Types.TyCon
+b5beca7fe6bde7c00a04f580fe6232e1
+  $tc'VCons :: GHC.Types.TyCon
+b091de8afe46e6583059e9a13cbf0260
+  $tc'VNil :: GHC.Types.TyCon
+1e2955563bfc81dc0aeeff103ffa5b9d
+  $tc'WriteFile :: GHC.Types.TyCon
+7d7a2179c89e7c78817ffbf2f05931a1
+  $tc'Z :: GHC.Types.TyCon
+8189b39f534d36400a535c0c9e21798a
+  $tcBlogAction :: GHC.Types.TyCon
+aa124310d52e5b7a3f6c3cd9f7ab4a94
+  $tcHList :: GHC.Types.TyCon
+79f04160c9cdb7b3f490b937be2d3473
+  $tcIntegerMonoid :: GHC.Types.TyCon
+6ebda4748eef49469ce9ec1c642bef55
+  $tcList :: GHC.Types.TyCon
+a93ddc8788806b0c5c9767d594343711
+  $tcMaybeShowable :: GHC.Types.TyCon
+39bb82d825df59e2b7c46044de6468fb
+  $tcNat :: GHC.Types.TyCon
+560407cb2d24e7f023937e050d343200
+  $tcProgram :: GHC.Types.TyCon
+956bfe7050b62d809bd13eacc1a0372d
+  $tcProxy :: GHC.Types.TyCon
+fb5edb51de8dbf05c4ce50c704ad6211
+  $tcSBool :: GHC.Types.TyCon
+296d68ad930e0a18a8dd1451b46d0aa5
+  $tcSNat :: GHC.Types.TyCon
+6048f7e0cb6f74066879a58b3512c5cb
+  $tcShowable :: GHC.Types.TyCon
+48cf33cdc878daa36b7fc90419368ae4
+  $tcSmallerThan :: GHC.Types.TyCon
+a4ed647ab577ca060cb616bbe7383605
+  $tcStringAndIntList :: GHC.Types.TyCon
+bbbeb8be04dcda8dd2d7c781325b7f6d
+  $tcVector :: GHC.Types.TyCon
+be0eb8aaab34952c4c4e04448ffbd6b1
+  $tcVoid :: GHC.Types.TyCon
+82060c4613ac91a89484fab5de0dc659
+  $trModule :: GHC.Types.Module
+1e354a500513ca5a437c37be404c44c7
+  data BlogAction = AddBlog | DeleteBlog | AddComment | DeleteComment
+55282bb3511a9b3330ad2997630e3218
+  type role HList phantom
+  data HList (types :: Exercises1.List *)
+90869f7cca9aa29903c20e0d79f8f236
+  data IntegerMonoid = Sum | Product
+5a33ee16a6c0797d9d9ee8cb812d6951
+  data List a = Nil | Cons a (Exercises1.List a)
+efd8abec028308ab95bebdadd768719e
+  type role MaybeShowable phantom
+  data MaybeShowable (isShowable :: GHC.Types.Bool)
+530155024acf427ecc845d3df6e523b5
+  data Nat = Z | S Exercises1.Nat
+b14db3d3e0e64f1f51dc6c69d7d1202e
+  data Program result
+    = OpenFile (Exercises1.Program result)
+    | WriteFile GHC.Base.String (Exercises1.Program result)
+    | ReadFile (GHC.Base.String -> Exercises1.Program result)
+    | CloseFile (Exercises1.Program result)
+    | Exit result
+d2028e987ca59afc2ad388ee87b1f03e
+  type role Proxy phantom
+  data Proxy (a :: k) = Proxy
+38809164828c325302a7bf8752a5fa77
+  type role SBool nominal
+  data SBool (value :: GHC.Types.Bool) where
+    SFalse :: SBool 'GHC.Types.False
+    STrue :: SBool 'GHC.Types.True
+6095bdbaf8c526a7855c194e9f55a302
+  type role SNat phantom
+  data SNat (value :: Exercises1.Nat)
+dc830c8ddece5a29b5291cbd9433c4d0
+  data Showable where
+    Showable :: GHC.Show.Show a => a -> Showable
+99350fec5a03b26d95a0fa3b62d7b4d5
+  type role SmallerThan phantom
+  data SmallerThan (limit :: Exercises1.Nat)
+43624ef13cf9892a0f5eca436d20ca26
+  type role StringAndIntList phantom
+  data StringAndIntList (stringCount :: Exercises1.Nat)
+f28def9ff1bcde3c674f766331dc68ad
+  type role Vector nominal representational
+  data Vector (n :: Exercises1.Nat) a where
+    VNil :: Vector 'Exercises1.Z a
+    VCons :: a -> (Exercises1.Vector n1 a)
+             -> Vector ('Exercises1.S n1) a
+8c4e9d6850d54f2d185a7061c5a1bb6d
+  data Void
+dcfd722376f526079a2005c1aa4f93a3
+  interpret :: Exercises1.Program a -> GHC.Types.IO a
+c2cb90e21c569e892b91bc4f31fbbf26
+  length :: Exercises1.Vector n a -> Exercises1.SNat n
+ae1da2fc56bcd212c23cf1b09d4982f9
+  myApp :: Exercises1.Program GHC.Types.Bool
+trusted: none
+require own pkg trusted: False
+module header:
+  Nothing
+declaration docs:
+arg docs:
+
