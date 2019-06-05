@@ -2,7 +2,7 @@
 {-# LANGUAGE GADTs         #-}
 {-# LANGUAGE TypeFamilies  #-}
 {-# LANGUAGE TypeOperators #-}
-module Exercises where
+module Answers where
 
 import Data.Kind (Constraint, Type)
 
@@ -22,8 +22,18 @@ data Nat = Z | S Nat
 -- | a. Use the @TypeOperators@ extension to rewrite the 'Add' family with the
 -- name '+':
 
+type family (x :: Nat) + (y :: Nat) :: Nat where
+  'Z   + y =         y
+  'S x + y = 'S (x + y)
+
 -- | b. Write a type family '**' that multiplies two naturals using '(+)'. Which
 -- extension are you being told to enable? Why?
+
+infixr 7 **
+
+type family (x :: Nat) ** (y :: Nat) :: Nat where
+  'Z   ** y = 'Z
+  'S x ** y = y + (x ** y)
 
 data SNat (value :: Nat) where
   SZ :: SNat 'Z
@@ -31,8 +41,9 @@ data SNat (value :: Nat) where
 
 -- | c. Write a function to add two 'SNat' values.
 
-
-
+add :: SNat x -> SNat y -> SNat (x + y)
+add  SZ    y =           y
+add (SS x) y = SS (add x y)
 
 
 {- TWO -}
@@ -44,7 +55,9 @@ data Vector (count :: Nat) (a :: Type) where
 -- | a. Write a function that appends two vectors together. What would the size
 -- of the result be?
 
--- append :: Vector m a -> Vector n a -> Vector ??? a
+append :: Vector m a -> Vector n a -> Vector (m + n) a
+append VNil xs = xs
+append (VCons x xs) y = VCons x (append xs y)
 
 -- | b. Write a 'flatMap' function that takes a @Vector n a@, and a function
 -- @a -> Vector m b@, and produces a list that is the concatenation of these

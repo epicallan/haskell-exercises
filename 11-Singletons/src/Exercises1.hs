@@ -1,13 +1,15 @@
 module Exercises1 where
 
 -- | Given below types
-
-newtype Door s = UnsafeMkDoor { doorMaterial :: String } deriving Show
+data Door (s :: DoorState) where
+  UnsafeMkDoor ::  { doorMaterial :: String }  -> Door s
 
 data DoorState = Opened | Closed | Locked
 
 
--- | derive Singleton instances for DoorState i.e Sing, SingI, SomeSing & SingKind 
+-- | derive Singleton instances for DoorState i.e Sing, SingI, SomeSing & SingKind
+
+-- | write these singleton functions:  withSingI, withSing, withSomeSing
 
 -- | write below functions
 
@@ -15,21 +17,17 @@ data DoorState = Opened | Closed | Locked
 
 -- | explain what reflection is
 
--- | fromSing :: Sing s -> DoorState
-
 -- | doorStatus :: Sing s -> Door s -> DoorState
 
 -- | lockAnyDoor_ :: SingI s => Door s -> Door 'Locked
 
--- | write the withSingI CPS like function
-
--- | write lockAnyDoor with "withSingI"
+-- | write lockAnyDoor in Sing CPS style
 
 -- | mkDoor :: Sing s -> String -> Door s
 
 
 -- | Write a function to unlock a door, but only if the user enters an odd number (as a password).
--- unlockDoor :: Int -> Door 'Locked -> Maybe (Door 'Closed)
+-- unlockDoor :: Int -> Door 'Locked -> Maybe (Door 'Opened)
 
 
 -- | Write a function that can open any door, taking a password, in “implicit Sing” style:

@@ -1,13 +1,12 @@
-{-# LANGUAGE DataKinds      #-}
-{-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE GADTs          #-}
-{-# LANGUAGE RankNTypes     #-}
+{-# LANGUAGE DataKinds          #-}
+{-# LANGUAGE GADTs              #-}
+{-# LANGUAGE KindSignatures     #-}
+{-# LANGUAGE RankNTypes         #-}
+{-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE TypeInType         #-}
 module Exercises where
 
 import Data.Kind (Type)
-
-
-
 
 
 {- ONE -}
@@ -20,15 +19,17 @@ data Exlistential where
 
 -- | a. Write a function to "unpack" this exlistential into a list.
 
--- unpackExlistential :: Exlistential -> (forall a. a -> r) -> [r]
--- unpackExlistential = error "Implement me!"
-
+unpackExlistential :: Exlistential -> (forall a. a -> r) -> [r]
+unpackExlistential Nil _         = []
+unpackExlistential (Cons x xs) f = f x : unpackExlistential xs f
 -- | b. Regardless of which type @r@ actually is, what can we say about the
 -- values in the resulting list?
 
+-- r is polymophic ??
+
 -- | c. How do we "get back" knowledge about what's in the list? Can we?
 
-
+-- Through pattern matching on Cons ??
 
 
 
@@ -42,16 +43,19 @@ data CanFold a where
 
 -- | a. The following function unpacks a 'CanFold'. What is its type?
 
--- unpackCanFold :: ???
--- unpackCanFold f (CanFold x) = f x
+unpackCanFold :: forall a b. (forall f. Foldable f => (f a -> b)) -> CanFold a -> b
+unpackCanFold f (CanFold x) = f x
 
 -- | b. Can we use 'unpackCanFold' to figure out if a 'CanFold' is "empty"?
 -- Could we write @length :: CanFold a -> Int@? If so, write it!
 
+length_ :: CanFold a -> Int
+length_ = unpackCanFold length
+
 -- | c. Write a 'Foldable' instance for 'CanFold'. Don't overthink it.
 
-
-
+instance Foldable CanFold where
+  foldMap f (CanFold xs) = foldMap f xs
 
 
 {- THREE -}
@@ -64,14 +68,30 @@ data EqPair where
 -- | a. Write a function that "unpacks" an 'EqPair' by applying a user-supplied
 -- function to its pair of values in the existential type.
 
+unpackEqPair :: (forall a. Eq a => a -> a -> b) -> EqPair -> b
+unpackEqPair f (EqPair x y) = f x y
+
 -- | b. Write a function that takes a list of 'EqPair's and filters it
 -- according to some predicate on the unpacked values.
+
+filterEqPairs :: (forall a. Eq a => a -> a ->  Bool) -> [EqPair] -> [EqPair]
+-- filter f = Prelude.filter (unpackEqPair f)
+filterEqPairs _ [] = []
+filterEqPairs predicate eqPairs  = go predicate eqPairs []
+  where
+    go ::  (forall a. Eq a => a -> a ->  Bool) -> [EqPair] -> [EqPair] -> [EqPair]
+    go _ [] acc = acc
+    go f (x : xs) acc = if unpackEqPair f x
+      then go predicate xs (x : acc)
+      else go predicate xs acc
 
 -- | c. Write a function that unpacks /two/ 'EqPair's. Now that both our
 -- variables are in rank-2 position, can we compare values from different
 -- pairs?
 
 
+unpackEqPairs :: (forall a. Eq a => a -> a -> r) -> EqPair -> EqPair -> (r, r)
+unpackEqPairs f xs ys = (unpackEqPair f xs, unpackEqPair f ys)
 
 
 
@@ -80,12 +100,15 @@ data EqPair where
 -- | When I was building @purescript-panda@, I came across a neat use case for
 -- rank-2 types. Consider the following sketch of a type:
 
-data Component input output
-  -- = Some sort of component stuff.
+data Component input output where
+  Component :: input -> output -> Component input output
+
 
 -- | Now, let's imagine we want to add a constructor to "nest" a component
 -- inside another component type. We need a way of transforming between our
 -- "parent" I/O and "child" I/O, so we write this type:
+
+-- | a. Write a GADT to existentialise @subinput@ and @suboutput@.
 
 data Nested input output subinput suboutput
   = Nested
@@ -94,22 +117,27 @@ data Nested input output subinput suboutput
       , output :: suboutput -> output
       }
 
--- | a. Write a GADT to existentialise @subinput@ and @suboutput@.
-
 data NestedX input output where
-  -- ...
+  Nest :: Nested input output subinput suboutput -> NestedX input output
 
 -- | b. Write a function to "unpack" a NestedX. The user is going to have to
 -- deal with all possible @subinput@ and @suboutput@ types.
 
+unpackNestedX
+  :: (forall subinput suboutput. Nested input output subinput suboutput -> r)
+  -> NestedX input output -> r
+unpackNestedX f (Nest x) = f x
+
 -- | c. Why might we want to existentialise the subtypes away? What do we lose
 -- by doing so? What do we gain?
 
+-- If we can get from our parent input to the child input, and from the child
+-- output to the parent output, do we really care about the child inputs and
+-- outputs? Probably not - by existentialising them, we don't have to keep
+-- track of them in types.
+
 -- In case you're interested in where this actually turned up in the code:
 -- https://github.com/i-am-tom/purescript-panda/blob/master/src/Panda/Internal/Types.purs#L84
-
-
-
 
 
 {- FIVE -}
@@ -132,12 +160,25 @@ data Text = Text String
 -- | Uh oh! What's the type of our children? It could be either! In fact, it
 -- could probably be anything that implements the following class, allowing us
 -- to render our DSL to an HTML string:
+
+data Child where
+  Child :: (Show a, Renderable a) => a -> Child
+
+deriving instance Show Child
+
+data HTML = HTML { properties :: [(String, String)], children :: [Child] }
+
 class Renderable component where render :: component -> String
+
 
 -- | a. Write a type for the children.
 
 -- | b. What I'd really like to do when rendering is 'fmap' over the children
 -- with 'render'; what's stopping me? Fix it!
+
+
+instance Renderable Child where
+  render (Child x) = render x
 
 -- | c. Now that we're an established Haskell shop, we would /also/ like the
 -- option to render our HTML to a Shakespeare template to write to a file
@@ -170,7 +211,7 @@ data MysteryBox a where
 
 
 
-{- SEVEN -}
+{- * SEVEN -}
 
 -- | When we talked about @DataKinds@, we briefly looked at the 'SNat' type:
 
@@ -183,7 +224,8 @@ data SNat (n :: Nat) where
 -- | We also saw that we could convert from an 'SNat' to a 'Nat':
 
 toNat :: SNat n -> Nat
-toNat = error "You should already know this one ;)"
+toNat SZ     = Z
+toNat (SS x) = S (toNat x)
 
 -- | How do we go the other way, though? How do we turn a 'Nat' into an 'SNat'?
 -- In the general case, this is impossible: the 'Nat' could be calculated from
@@ -196,6 +238,11 @@ toNat = error "You should already know this one ;)"
 -- then returns an @r@. The successor case is a bit weird here - type holes
 -- will help you!
 
+fromNat :: Nat -> (forall a. SNat a -> r)  -> r
+fromNat Z f     = f SZ
+fromNat (S n) f = fromNat n (f . SS)
+
+
 -- | If you're looking for a property that you could use to test your function,
 -- remember that @fromNat x toNat === x@!
 
@@ -203,7 +250,7 @@ toNat = error "You should already know this one ;)"
 
 
 
-{- EIGHT -}
+{- * EIGHT -}
 
 -- | Bringing our vector type back once again:
 
@@ -214,3 +261,15 @@ data Vector (n :: Nat) (a :: Type) where
 -- | It would be nice to have a 'filter' function for vectors, but there's a
 -- problem: we don't know at compile time what the new length of our vector
 -- will be... but has that ever stopped us? Make it so!
+
+filterV :: (a -> Bool) -> Vector n a -> (forall m. Vector m a -> r) -> r
+filterV _  VNil        f = f VNil
+filterV p (VCons x xs) f = filterV p xs (if p x then f . VCons x else f)
+
+-- | Addtional questions
+{- * NINE -}
+
+-- | Given Cont type below, write Functor, Applicative and Monad Instances
+newtype Cont a = Cont { unCont :: forall r. (a->r) -> r }
+
+-- | Implement Monad Transformer version on Cont

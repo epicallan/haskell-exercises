@@ -11,4 +11,4 @@ library
   default-extensions: LambdaCase DeriveGeneric FlexibleInstances FlexibleContexts ScopedTypeVariables TypeApplications MultiParamTypeClasses RecordWildCards TypeApplications TypeFamilies GADTs PolyKinds DataKinds RankNTypes TemplateHaskell TypeOperators UndecidableInstances KindSignatures
   exposed-modules:  TypeFamilies
                   , Exercises
-
+                  , Answers

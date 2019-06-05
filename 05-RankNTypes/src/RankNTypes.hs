@@ -9,7 +9,7 @@ change entirely depending on -} where {- you put your quantifiers. -}
   Let's start things off with a function to wrap the values of a 'Tuple' in
   'Maybe' by applying them both to 'Just':
 -}
-
+wrapMaybe :: (a, b) -> (Maybe a, Maybe b)
 wrapMaybe (x, y) = (Just x, Just y)
 
 example :: (Maybe Int, Maybe String)
@@ -22,7 +22,7 @@ example = wrapMaybe (25, "Tom")
   to a @f a@ for some @f@. No problem, we'll just introduce a couple more
   variables:
 -}
-
+wrapAny :: (t -> b) -> (t, t) -> (b, b)
 wrapAny f (a, b) = (f a, f b)
 
 -- example2 :: (Maybe Int, Maybe String)
