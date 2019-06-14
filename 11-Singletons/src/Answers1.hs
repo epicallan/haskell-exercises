@@ -74,11 +74,11 @@ singInstance s = withSingInstance SingInstance
     withSingInstance :: (SingI a => SingInstance a) -> SingInstance a
     withSingInstance si = unsafeCoerce (DonTInstantiate si) s
 
-withSingI :: forall k (a :: k). Sing a -> (forall r. (SingI a => r) -> r)
+withSingI :: forall k r (a :: k). Sing a -> (SingI a => r) -> r
 withSingI sn r = case singInstance sn of
   SingInstance -> r
 
-withSing :: forall k (a :: k). SingI a => (forall r. (Sing a -> r) -> r)
+withSing :: forall k r (a :: k). SingI a => (Sing a -> r) -> r
 withSing f  = f sing
 
 withSomeSing :: forall k r
@@ -88,6 +88,7 @@ withSomeSing :: forall k r
              -> r
 withSomeSing value f = case toSing value of
   SomeSing sn -> f sn
+
 
 -- | write below functions
 
@@ -148,4 +149,3 @@ openAnyDoor sn d  = case sn of
   SOpened -> Just d
   SClosed -> Just . openDoor $ d
   SLocked -> openDoor <$> unlockDoor 1 d
-

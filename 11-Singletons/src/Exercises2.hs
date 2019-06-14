@@ -6,12 +6,12 @@ import Data.Singletons.TH
 
 -- | Given below types
 
-newtype Door s = UnsafeMkDoor { doorMaterial :: String } deriving Show
-
 $(singletons [d|
   data DoorState = Opened | Closed | Locked
     deriving (Show, Eq)
   |])
+
+newtype Door (s :: DoorState) = UnsafeMkDoor { doorMaterial :: String } deriving Show
 
 data SomeDoor :: Type where
     MkSomeDoor :: Sing s -> Door s -> SomeDoor
@@ -43,7 +43,10 @@ mkSomeDoor = error "do me"
 
 -- | define reification
 
--- | define SingKind instances for Maybe
+-- | define SingKind_ class which is a mirror of SingKind
+
+-- | define SingKind_ instances for Maybe
+
 
 {-
 Let’s revisit our original redundant SomeDoor, compared to our final SomeDoor:

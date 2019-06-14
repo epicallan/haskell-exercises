@@ -56,18 +56,17 @@ data Vector (count :: Nat) (a :: Type) where
 -- of the result be?
 
 append :: Vector m a -> Vector n a -> Vector (m + n) a
-append VNil xs = xs
+append VNil xs        = xs
 append (VCons x xs) y = VCons x (append xs y)
 
 -- | b. Write a 'flatMap' function that takes a @Vector n a@, and a function
 -- @a -> Vector m b@, and produces a list that is the concatenation of these
 -- results. This could end up being a deceptively big job.
 
--- flatMap :: Vector n a -> (a -> Vector m b) -> Vector ??? b
--- flatMap = error "Implement me!"
 
-
-
+flatMap :: Vector n a -> (a -> Vector m b) -> Vector (n **  m) b
+flatMap VNil _         = VNil
+flatMap (VCons x xs) f = append (f x) (flatMap xs f)
 
 
 {- THREE -}
@@ -79,22 +78,45 @@ append (VCons x xs) y = VCons x (append xs y)
 -- | c. Write an 'All' function that returns @'True@ if all the values in a
 -- type-level list of boleans are @'True@.
 
+type family (&&) (x :: Bool) (y :: Bool) :: Bool where
+  'True && y = y
+  'False && x = 'False
 
+type family (||) (x :: Bool) (y :: Bool) :: Bool where
+  'True || y = 'True
+  'False || y = y
 
-
+type family All (x :: [Bool]) :: Bool where
+  All '[ ] = 'True
+  All (x ': xs) = x && All xs
 
 {- FOUR -}
 
 -- | a. Nat fun! Write a type-level 'compare' function using the promoted
 -- 'Ordering' type.
 
+-- data Order = GT | LT
+
+type family Compare (x :: Nat) (y :: Nat) :: Ordering where
+  Compare 'Z 'Z = 'EQ
+  Compare ('S x) 'Z = 'GT
+  Compare ('Z) ('S x) = 'LT
+  Compare ('S x) ('S y) = Compare x y
+
 -- | b. Write a 'Max' family to get the maximum of two natural numbers.
+
+type family Max (x :: Nat) (y :: Nat) :: Nat where
+  Max x y = Max' (Compare x y) x y
+
+type family Max' (o :: Ordering) (x :: Nat) (y :: Nat) :: Nat where
+  Max' 'LT _ y = y
+  Max' _ x _ = x
 
 -- | c. Write a family to get the maximum natural in a list.
 
-
-
-
+type family Maximum (xs :: [Nat]) :: Nat where
+  Maximum '[ ] = 'Z
+  Maximum (x ': xs) = Max x (Maximum xs)
 
 {- FIVE -}
 
@@ -102,15 +124,18 @@ data Tree = Empty | Node Tree Nat Tree
 
 -- | Write a type family to insert a promoted 'Nat' into a promoted 'Tree'.
 
+type family Insert (x :: Nat) (xs :: Tree) :: Tree where
+  Insert x  'Empty       = 'Node 'Empty x 'Empty
+  Insert x ('Node l c r) = Insert' (Compare x c) x ('Node l c r)
 
-
-
+type family Insert' (o :: Ordering) (x :: Nat) (xs :: Tree) :: Tree where
+  Insert' 'LT x ('Node l c r) = 'Node (Insert x l) c r
+  Insert' 'GT x ('Node l c r) = 'Node l c (Insert x r)
+  Insert' 'EQ x  xs           =  xs
 
 {- SIX -}
 
 -- | Write a type family to /delete/ a promoted 'Nat' from a promoted 'Tree'.
-
-
 
 
 
@@ -125,8 +150,13 @@ data HList (xs :: [Type]) where
 
 -- | Write a function that appends two 'HList's.
 
+type family (++) (xs :: [Type]) (ys :: [Type]) :: [Type] where
+  '[] ++ ys = ys
+  (x ': xs) ++ ys = x ':  (xs ++ ys)
 
-
+appendHList :: HList xs -> HList ys -> HList (xs ++ ys)
+appendHList HNil ys           = ys
+appendHList (x `HCons` xs) ys = x `HCons` ( appendHList xs ys)
 
 
 {- EIGHT -}
@@ -148,14 +178,33 @@ type family CAppend (x :: Constraint) (y :: Constraint) :: Constraint where
 -- list of types, and builds a constraint on all the types.
 
 type family Every (c :: Type -> Constraint) (x :: [Type]) :: Constraint where
-  -- ...
+  Every c '[ ] = ()
+  Every c (x ': xs ) = (c x, Every c xs)
+
 
 -- | b. Write a 'Show' instance for 'HList' that requires a 'Show' instance for
 -- every type in the list.
 
+instance (Every Show xs) => Show (HList xs) where
+  show HNil         = "HNil"
+  show (HCons x xs) = show x ++ ":" ++ show xs
+
 -- | c. Write an 'Eq' instance for 'HList'. Then, write an 'Ord' instance.
 -- Was this expected behaviour? Why did we need the constraints?
 
+instance Every Eq xs => Eq (HList xs) where
+  HCons x xs == HCons y ys = x == y && xs == ys
+  _          == _          = True -- Could only be two HNils!
+
+-- We have to add 'Every Eq xs' here, which may seem odd, as 'Ord' has
+-- previously /implied/ 'Eq'. If GHC knows that every element has an 'Ord'
+-- instance, why can't it tell that every one has an 'Eq' instance? The reason
+-- is that it certainly /could/ if it tried a bit harder. GHC can't /see/ a
+-- constraint that says any particular @x@ has an 'Ord' constraint, which means
+-- it can't convince itself that this will be true in the general case.
+instance (Every Eq xs, Every Ord xs) => Ord (HList xs) where
+  compare (HCons x xs) (HCons y ys) = compare x y <> compare xs ys
+  compare  _            _           = EQ
 
 
 

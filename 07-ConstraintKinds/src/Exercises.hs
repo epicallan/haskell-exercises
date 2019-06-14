@@ -1,11 +1,11 @@
-{-# LANGUAGE ConstraintKinds #-}
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE GADTs #-}
-{-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE RankNTypes #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE ConstraintKinds    #-}
+{-# LANGUAGE DataKinds          #-}
+{-# LANGUAGE FlexibleInstances  #-}
+{-# LANGUAGE GADTs              #-}
+{-# LANGUAGE KindSignatures     #-}
+{-# LANGUAGE RankNTypes         #-}
+{-# LANGUAGE TypeFamilies       #-}
+{-# LANGUAGE TypeOperators      #-}
 module Exercises where -- ^ This is starting to look impressive, right?
 
 import Data.Kind (Constraint, Type)
@@ -33,14 +33,27 @@ data List a = Nil | Cons a (List a)
 -- | a. Do it! Think about the @Nil@ and @Cons@ cases separately; which
 -- constraints can the @Nil@ case satisfy?
 
-data ConstrainedList (c :: Type -> Constraint) where
-  -- IMPLEMENT ME
+data ConstrainedList (c :: Type -> Constraint) :: Type where
+  NilC :: ConstrainedList c
+  ConsC :: forall c a. c a => a -> ConstrainedList c -> ConstrainedList c
+
+data IdNum = IdNum Int deriving Show
+
+sampleC :: ConstrainedList Show
+sampleC = ConsC (IdNum 10) ( ConsC "hey" NilC)
 
 -- | b. Using what we know about RankNTypes, write a function to fold a
 -- constrained list. Note that we'll need a folding function that works /for
 -- all/ types who implement some constraint @c@. Wink wink, nudge nudge.
 
--- foldConstrainedList :: ???
+foldConstrainedList :: forall m c. Monoid m => (forall a. c a => a -> m) -> ConstrainedList c -> m
+foldConstrainedList  _ NilC         = mempty
+foldConstrainedList fn (ConsC x xs) = fn x <> foldConstrainedList fn xs
+
+-- foldr :: (a -> b -> b) -> b -> [a] -> b
+foldrConstrainedList :: (forall a. c a => (a -> b -> b)) -> b -> ConstrainedList c -> b
+foldrConstrainedList _ b NilC            = b
+foldrConstrainedList fn b (x `ConsC` xs) = x `fn` foldrConstrainedList fn b xs
 
 -- | Often, I'll want to constrain a list by /multiple/ things. The problem is
 -- that I can't directly write multiple constraints into my type, because the
@@ -54,8 +67,17 @@ data ConstrainedList (c :: Type -> Constraint) where
 -- combines `Monoid a` and `Show a`. What other extension did you need to
 -- enable? Why?
 
--- class ??? => Constraints a
--- instance ??? => Constraints a
+class (Semigroup a, Monoid a, Show a) => Constraints a
+
+-- UndecidableInstances is required because nothing is getting "smaller" - when
+-- GHC encounters this constraint, it ends up with more things to solve! This
+-- means that GHC's (limited) termination checker can't be convinced that we'll
+-- ever terminate.
+instance (Semigroup a, Monoid a, Show a) => Constraints a
+
+
+sampleB :: ConstrainedList Constraints
+sampleB = ConsC (mempty :: String) NilC
 
 -- | What can we now do with this constrained list that we couldn't before?
 -- There are two opportunities that should stand out!
@@ -90,7 +112,7 @@ data HList (xs :: [Type]) where
 -- | We typically define foldMap like this:
 
 foldMap :: Monoid m => (a -> m) -> [a] -> m
-foldMap f = foldr (\x acc -> f x <> acc) mempty
+foldMap fn = foldr (\x acc -> fn x <> acc) mempty
 
 -- | c. What constraint do we need in order to use our @(a -> m)@ function on
 -- an @HList@? You may need to look into the __equality constraint__ introduced

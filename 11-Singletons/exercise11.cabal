@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d9a1bf8f08812e4bfb57f7bfdf738138d46894140385c6136a8eec210c103bb5
+-- hash: 68e50641a4ae6caf60f147d5a347e21322151a86ba95896e54fae551b311e3eb
 
 name:           exercise11
 version:        0.0.1
@@ -17,10 +17,12 @@ build-type:     Simple
 library
   exposed-modules:
       Answers1
-      Answers4
+      Answers2
+      Answers3
       Exercises1
       Exercises2
       Exercises3
+      Exercises4
   other-modules:
       Paths_exercise11
   hs-source-dirs:
