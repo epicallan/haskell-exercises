@@ -4,9 +4,9 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: eccb228769b484a8624c7626abec29277ab23527679a69de80927bc9fca7ccfb
+-- hash: 0c5a92165570c3b2b8ae053f002b5a59309d1d66520d67535fe9aa5c6d24cf8d
 
-name:           exercise11
+name:           exercise12
 version:        0.0.1
 author:         Lukwago Allan
 maintainer:     epicallan.al@gmail.com
@@ -16,16 +16,9 @@ build-type:     Simple
 
 library
   exposed-modules:
-      Answers1
-      Answers2
-      Answers3
-      Answers4
       Exercises1
-      Exercises2
-      Exercises3
-      Exercises4
   other-modules:
-      Paths_exercise11
+      Paths_exercise12
   hs-source-dirs:
       src
   default-extensions: LambdaCase DeriveGeneric FlexibleInstances FlexibleContexts ScopedTypeVariables TypeApplications MultiParamTypeClasses RecordWildCards TypeApplications TypeFamilies GADTs PolyKinds DataKinds RankNTypes TemplateHaskell TypeOperators UndecidableInstances KindSignatures EmptyCase StandaloneDeriving InstanceSigs

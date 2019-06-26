@@ -1,0 +1,45 @@
+name: exercise12
+version: '0.0.1'
+author: Lukwago Allan
+maintainer: epicallan.al@gmail.com
+copyright: 2019 Lukwago Allan
+license: BSD3
+library:
+  source-dirs: src
+  dependencies:
+  - base
+  - singletons
+default-extensions:
+  - LambdaCase
+  - DeriveGeneric
+  - FlexibleInstances
+  - FlexibleContexts
+  - ScopedTypeVariables
+  - TypeApplications
+  - MultiParamTypeClasses
+  - RecordWildCards
+  - TypeApplications
+  - TypeFamilies
+  - GADTs
+  - PolyKinds
+  - DataKinds
+  - RankNTypes
+  - TemplateHaskell
+  - TypeOperators
+  - UndecidableInstances
+  - KindSignatures
+  - EmptyCase
+  - StandaloneDeriving
+  - InstanceSigs
+
+ghc-options:
+  # Source: https://medium.com/mercury-bank/enable-all-the-warnings-a0517bc081c3
+  - -Wall
+  - -Werror
+  - -Wincomplete-uni-patterns
+  - -Wincomplete-record-updates
+  - -Wcompat
+  - -Widentities
+  - -Wredundant-constraints
+  - -fhide-source-paths
+  - -Wpartial-fields

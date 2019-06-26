@@ -62,20 +62,8 @@ knockIO = knock auto someDoor
     someDoor :: Door 'Locked
     someDoor = UnsafeMkDoor "Oak"
 
--- | Decidable predicates
+-- | Decidable predicates, write definitions for Decision 
 
-{-
-
-data Decision a = Proved a                  -- ^ a value of a exists
-                | Disproved (Refuted a)     -- ^ a value of a cannot exist
-
--- | The data type with no values
-data Void
-
--- | 'a' cannot exist.  Commonly also called `Not`
-type Refuted a = a -> Void
-
--}
 
 -- |  write isKnockable :: Sing s -> Decision (Knockable s)
 
@@ -93,17 +81,17 @@ knockSomeDoor (MkSomeDoor s d) = case isKnockable s of
   Disproved _ -> putStrLn "not allowed"
 
 -- | Write SDecide class definition
-{- class SDecide_ k where
+
+{-
+ data :~: :: k1 -> k2 -> Type where
+   Refl :: a :~: a
+
+ class SDecide k where
   (%~) :: Sing (a :: k) -> Sing (b :: k) -> Decision (a :~: b)
 -}
+
 -- | write Bool instance for SDecide
-{-
- instance SDecide_ Bool where
-  STrue %~ STrue = Proved Refl
-  SFalse %~ SFalse = Proved Refl
-  SFalse %~ STrue = Disproved $ \case {}
-  STrue %~ SFalse =  Disproved $ \case {}
--}
+
 
 -- | given below types
 
@@ -141,15 +129,17 @@ knockSomeDoor_ (MkSomeDoor s d) = case statePass s of
 
 -- | For class Eq write promoted Versions PEq and SEq
 {-
+ class Eq a where
+   (==) a -> a :: Bool
+   (/=) a -> a :: Bool
 
-class PEq k where
-  type (==) (a :: k) (b :: k) :: Bool
-  type (/=) (a :: k) (b :: k) :: Bool
+ class PEq k where
+   type (==) (a :: k) (b :: k) :: Bool
+   type (/=) (a :: k) (b :: k) :: Bool
 
-class SEq k where
- (%==) :: Sing (a :: k) -> Sing (b :: k) -> Sing (a == b)
- (%/=) :: Sing ( a :: k) -> Sing (b :: k) -> Sing (a /= b)
-
+ class SEq k where
+  (%==) :: Sing (a :: k) -> Sing (b :: k) -> Sing (a == b)
+  (%/=) :: Sing (a :: k) -> Sing (b :: k) -> Sing (a /= b)
 -}
 
 {-
@@ -160,6 +150,11 @@ $(singletons [d|
   |])
 
 write singleton Eq instances that would be provided for Pass by TH
+
+instance SEq Pass where
+  SObstruct %== SObstruct = 'True
+ ...
+
 -}
 
 

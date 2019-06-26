@@ -73,24 +73,6 @@ withDoor s material f = case toSing s of
 
 -- | define SingKind instances for Maybe define a Maybe_ data type to avoid clashing with imported instances
 
-class SingKind_ k where
-  type Demote_ k  = (r :: Type) | r -> k
-  toSing_ :: Demote_ k -> SomeSing k
-  fromSing_ :: Sing (a :: k) -> Demote_ k
-
-instance SingKind_ k => SingKind_ (Maybe k) where
-  type Demote_ (Maybe k) = Maybe (Demote_ k)
-
-  toSing_ :: Maybe (Demote_ k) -> SomeSing (Maybe k)
-  toSing_ Nothing      = SomeSing SNothing
-  toSing_ (Just value) = case toSing_ value of
-    SomeSing svalue -> SomeSing $  SJust svalue
-
-
-  fromSing_ :: Sing (a :: (Maybe k)) -> Maybe (Demote_ k)
-  fromSing_ SNothing   = Nothing
-  fromSing_ (SJust ss) = Just $ fromSing_ ss
-
 
 {-
 Let’s revisit our original redundant SomeDoor, compared to our final SomeDoor:
